@@ -1,0 +1,54 @@
+[core]
+# Workspace-Konfiguration
+workspace_base = "/opt/workspace_base"
+# Debugging aktivieren
+debug = false
+# Maximale Anzahl von Iterationen
+max_iterations = 250
+# Maximale Anzahl gleichzeitiger Konversationen pro Benutzer
+max_concurrent_conversations = 3
+# Maximales Alter von Konversationen in Sekunden, bevor sie automatisch geschlossen werden
+conversation_max_age_seconds = 864000  # 10 Tage
+
+[sandbox]
+# Sandbox-Timeout in Sekunden
+timeout = 120
+# Container-Image für die Sandbox
+base_container_image = "nikolaik/python-nodejs:python3.12-nodejs22"
+# Host-Netzwerk verwenden
+use_host_network = false
+# Zusätzliche Build-Argumente für die Runtime
+runtime_extra_build_args = ["--network=host", "--add-host=host.docker.internal:host-gateway"]
+# Automatisches Linting nach dem Bearbeiten aktivieren
+enable_auto_lint = true
+# Plugins initialisieren
+initialize_plugins = true
+# Runtime-Container am Leben erhalten, nachdem die Sitzung beendet ist
+keep_runtime_alive = true
+# Geschlossene Runtimes pausieren, anstatt sie zu stoppen
+pause_closed_runtimes = true
+# Verzögerung in Sekunden, bevor inaktive Runtimes geschlossen werden
+close_delay = 300
+
+[agent]
+# Browsing-Tool aktivieren
+codeact_enable_browsing = true
+# LLM-Editor aktivieren
+codeact_enable_llm_editor = true
+# IPython-Tool aktivieren
+codeact_enable_jupyter = true
+# Verlaufstrunkierung aktivieren, um die Sitzung fortzusetzen, wenn das LLM-Kontextlängenlimit erreicht wird
+enable_history_truncation = true
+
+[condenser]
+# Art des Kondensators
+type = "llm"
+# Anzahl der ersten Ereignisse, die immer behalten werden sollen (typischerweise enthält die Aufgabenbeschreibung)
+keep_first = 1
+# Maximale Größe des Verlaufs, bevor die Zusammenfassung ausgelöst wird
+max_size = 100
+
+[llm.condenser]
+model = "gpt-3.5-turbo"
+temperature = 0.1
+max_output_tokens = 1024

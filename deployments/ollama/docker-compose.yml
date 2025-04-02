@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-server
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  openhands-ollama:
+    build:
+      context: ../..
+      dockerfile: ./deployments/ollama/Dockerfile
+      args:
+        CONFIG_PATH: ./deployments/ollama/config.toml
+    image: openhands-ollama:latest
+    container_name: openhands-ollama
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.30-nikolaik
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+    ports:
+      - "3003:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ollama-state:/.openhands-state
+      - ./workspace:/opt/workspace_base
+    stdin_open: true
+    tty: true
+
+volumes:
+  ollama-data:
+    name: ollama-data
+  ollama-state:
+    name: openhands-ollama-state
