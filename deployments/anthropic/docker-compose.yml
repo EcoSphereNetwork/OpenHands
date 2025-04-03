@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  openhands-anthropic:
+    build:
+      context: ../..
+      dockerfile: ./deployments/anthropic/Dockerfile
+      args:
+        CONFIG_PATH: ./deployments/anthropic/config.toml
+    image: openhands-anthropic:latest
+    container_name: openhands-anthropic
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.30-nikolaik
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+    ports:
+      - "3001:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - anthropic-state:/.openhands-state
+      - ./workspace:/opt/workspace_base
+    stdin_open: true
+    tty: true
+
+volumes:
+  anthropic-state:
+    name: openhands-anthropic-state

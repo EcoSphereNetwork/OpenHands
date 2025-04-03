@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  openhands-openai:
+    build:
+      context: ../..
+      dockerfile: ./deployments/openai/Dockerfile
+      args:
+        CONFIG_PATH: ./deployments/openai/config.toml
+    image: openhands-openai:latest
+    container_name: openhands-openai
+    restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.30-nikolaik
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+    ports:
+      - "3002:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - openai-state:/.openhands-state
+      - ./workspace:/opt/workspace_base
+    stdin_open: true
+    tty: true
+
+volumes:
+  openai-state:
+    name: openhands-openai-state

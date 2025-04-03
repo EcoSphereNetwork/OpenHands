@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # Dieser Docker-Compose ist ein Template für die Erstellung von Issue-Resolver-Instanzen
+  # Er wird von setup-repositories.sh verwendet, um für jedes Repository eine eigene Instanz zu erstellen
+  
+  openhands-resolver:
+    build:
+      context: ../..
+      dockerfile: ./deployments/issue-resolver/Dockerfile
+      args:
+        CONFIG_PATH: ./deployments/issue-resolver/repositories/${REPO_NAME}/config.toml
+        REPO_NAME: ${REPO_NAME}
+    image: openhands-resolver-${REPO_NAME}:latest
+    container_name: openhands-resolver-${REPO_NAME}
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GIT_USERNAME=${GIT_USERNAME}
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.30-nikolaik
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+      - SELECTED_REPO=EcoSphereNetwork/${REPO_NAME}
+    ports:
+      - "${PORT}:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - resolver-${REPO_NAME}-state:/.openhands-state
+      - ./workspace/${REPO_NAME}:/opt/workspace_base
+    stdin_open: true
+    tty: true
+
+volumes:
+  resolver-${REPO_NAME}-state:
+    name: openhands-resolver-${REPO_NAME}-state
