@@ -29,7 +29,7 @@ Das Projekt ist wie folgt strukturiert:
 
 2. Erstelle eine `.env`-Datei basierend auf `.env.example`:
    ```bash
-   cp .env.example .env
+   cp env.example .env
    ```
 
 3. Bearbeite die `.env`-Datei und füge deine API-Keys und Tokens ein.
