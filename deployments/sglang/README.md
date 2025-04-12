@@ -26,7 +26,7 @@ Empfohlene Hardware:
 ```bash
 # Option 1: Repository klonen
 git clone https://github.com/EcoSphereNetwork/OpenHands.git
-cd deployments/sglang
+cd OpenHands/deployments/sglang
 chmod +x setup-openhands-multimodel.sh
 ./setup-openhands-multimodel.sh
 cd ~/openhands-multi-model
