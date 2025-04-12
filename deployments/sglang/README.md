@@ -27,14 +27,14 @@ Empfohlene Hardware:
 # Option 1: Repository klonen
 git clone https://github.com/EcoSphereNetwork/OpenHands.git
 cd OpenHands/deployments/sglang
-chmod +x setup-openhands-multimodel.sh
-./setup-openhands-multimodel.sh
+chmod +x multi-model-openhands-setup.sh
+./multi-model-openhands-setup.sh
 cd ~/openhands-multi-model
 
 # Option 2: Setup-Skript herunterladen und ausführen
 curl -o setup-openhands-multimodel.sh https://raw.githubusercontent.com/EcoSphereNetwork/OpenHands/main/deployments/sglang/multi-model-openhands-setup.sh
-chmod +x setup-openhands-multimodel.sh
-./setup-openhands-multimodel.sh
+chmod +x multi-model-openhands-setup.sh
+./multi-model-openhands-setup.sh
 cd ~/openhands-multi-model
 ```
 
