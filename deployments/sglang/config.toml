@@ -1,0 +1,43 @@
+[core]
+workspace_base = "/opt/workspace_base"
+debug = false
+max_iterations = 250
+max_concurrent_conversations = 3
+conversation_max_age_seconds = 864000  # 10 Tage
+
+[sandbox]
+timeout = 120
+base_container_image = "nikolaik/python-nodejs:python3.12-nodejs22"
+use_host_network = false
+runtime_extra_build_args = ["--network=host", "--add-host=host.docker.internal:host-gateway"]
+enable_auto_lint = true
+initialize_plugins = true
+keep_runtime_alive = true
+pause_closed_runtimes = true
+close_delay = 300
+
+[agent]
+codeact_enable_browsing = true
+codeact_enable_llm_editor = true
+codeact_enable_jupyter = true
+enable_history_truncation = true
+
+[condenser]
+type = "llm"
+keep_first = 1
+max_size = 100
+
+[llm.condenser]
+model = "Phi3-mini-4k-instruct-gguf"  # Kleineres Modell für die Zusammenfassung
+temperature = 0.1
+max_output_tokens = 1024
+url = "http://sglang-server:30000/v1/chat"
+custom_llm_provider = "sglang"
+
+[llm]
+model = "${SGLANG_MODEL}"  # Wird aus der Umgebungsvariable gelesen
+api_key = ""  # Kein API-Key für lokale Modelle erforderlich
+temperature = 0.7
+max_output_tokens = 4096
+url = "http://sglang-server:30000/v1/chat"
+custom_llm_provider = "sglang"
