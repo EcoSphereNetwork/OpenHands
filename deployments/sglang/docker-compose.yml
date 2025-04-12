@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  sglang-server:
+    image: sglang/sglang:latest
+    container_name: sglang-server
+    restart: unless-stopped
+    ports:
+      - "30000:30000"  # API-Endpunkt
+      - "30001:30001"  # Web-UI
+    volumes:
+      - sglang-data:/root/.cache  # Cache für Modelle
+    environment:
+      - SGLANG_DEVICE_MAP=auto      # Automatische Geräteerkennung
+      - SGLANG_WORKER_PORT=30000    # Port für API-Endpunkt
+      - SGLANG_MODEL=${SGLANG_MODEL:-Phi3-mini-4k-instruct-gguf}  # Standardmodell
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  openhands-sglang:
+    build:
+      context: ../..
+      dockerfile: ./deployments/sglang/Dockerfile
+      args:
+        CONFIG_PATH: ./deployments/sglang/config.toml
+    image: openhands-sglang:latest
+    container_name: openhands-sglang
+    restart: unless-stopped
+    depends_on:
+      sglang-server:
+        condition: service_healthy
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.30-nikolaik
+      - WORKSPACE_MOUNT_PATH=/opt/workspace_base
+    ports:
+      - "3004:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - sglang-openhands-state:/.openhands-state
+      - ./workspace:/opt/workspace_base
+    stdin_open: true
+    tty: true
+
+volumes:
+  sglang-data:
+    name: sglang-data
+  sglang-openhands-state:
+    name: openhands-sglang-state
