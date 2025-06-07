@@ -108,6 +108,7 @@
 # Configuration for LLM models (group name starts with 'llm')
 # use 'llm' for the default LLM config
 ##############################################################################
+# Default LLM configuration for LM Studio
 [llm]
 # AWS access key ID
 #aws_access_key_id = ""
@@ -119,10 +120,10 @@
 #aws_secret_access_key = ""
 
 # API key to use (For Headless / CLI only -  In Web this is overridden by Session Init)
-api_key = ""
+api_key = "dummy"
 
 # API base URL (For Headless / CLI only -  In Web this is overridden by Session Init)
-#base_url = ""
+base_url = "http://localhost:1234/v1"
 
 # API version
 #api_version = ""
@@ -146,7 +147,7 @@ api_key = ""
 #max_output_tokens = 0
 
 # Model to use. (For Headless / CLI only -  In Web this is overridden by Session Init)
-model = "gpt-4o"
+model = "lm_studio/devstral-small-2505"
 
 # Number of retries to attempt when an operation fails with the LLM.
 # Increase this value to allow more attempts before giving up
@@ -241,10 +242,10 @@ enable_finish = true
 #llm_config = 'your-llm-config-group'
 
 # Whether to use prompt extension (e.g., microagent, repo/runtime info) at all
-#enable_prompt_extensions = true
+enable_prompt_extensions = true
 
 # List of microagents to disable
-#disabled_microagents = []
+disabled_microagents = []
 
 # Whether history should be truncated to continue the session when hitting LLM context
 # length limit
@@ -333,6 +334,7 @@ classpath = "my_package.my_module.MyCustomAgent"
 # Configure volumes under the [sandbox] section:
 # [sandbox]
 # volumes = "/my/host/dir:/workspace:rw,/path2:/workspace/path2:ro"
+volumes = "/home/saschi:/home/saschi:rw"
 
 #################################### Security ###################################
 # Configuration for security features
@@ -347,6 +349,12 @@ classpath = "my_package.my_module.MyCustomAgent"
 
 # Whether to enable security analyzer
 #enable_security_analyzer = false
+
+#################################### MCP ######################################
+# Configuration for Model Context Protocol servers
+##############################################################################
+[mcp]
+sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
 
 #################################### Condenser #################################
 # Condensers control how conversation history is managed and compressed when

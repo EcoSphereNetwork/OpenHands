@@ -1,0 +1,24 @@
+###################### OpenHands Example Configuration ######################
+
+[core]
+# Base path for the workspace
+workspace_base = "./workspace"
+
+[llm]
+# LM Studio configuration
+model = "lm_studio/devstral-small-2505"
+base_url = "http://localhost:1234/v1"
+api_key = "dummy"
+
+[agent]
+# Enable all microagents
+enable_prompt_extensions = true
+disabled_microagents = []
+
+[sandbox]
+# Mount home directory with write access
+volumes = "/home/saschi:/home/saschi:rw"
+
+[mcp]
+# Example SSE server with API key
+sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
