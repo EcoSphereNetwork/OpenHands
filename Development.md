@@ -78,6 +78,18 @@ Environment variables > config.toml variables > default variables
 **Note on Alternative Models:**
 See [our documentation](https://docs.all-hands.dev/usage/llms) for recommended models.
 
+To use a local LM Studio instance during development, set the following in your `config.toml`:
+
+```toml
+[llm]
+model = "lm_studio/<your model>"
+base_url = "http://localhost:1234/v1"
+api_key = "dummy"
+
+[mcp]
+sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
+```
+
 ### 4. Running the application
 
 #### Option A: Run the Full Application

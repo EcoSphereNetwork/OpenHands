@@ -70,6 +70,20 @@ When you open the application, you'll be asked to choose an LLM provider and add
 [Anthropic's Claude Sonnet 4](https://www.anthropic.com/api) (`anthropic/claude-sonnet-4-20250514`)
 works best, but you have [many options](https://docs.all-hands.dev/usage/llms).
 
+To run fully locally you can point OpenHands at an [LM Studio](https://lmstudio.ai/) server. Configure `config.toml` with:
+
+```toml
+[llm]
+model = "lm_studio/<your model>"
+base_url = "http://localhost:1234/v1"
+api_key = "dummy"
+
+[mcp]
+sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
+```
+
+Place additional microagents in `~/.openhands/microagents/` to have them loaded automatically.
+
 ## 💡 Other ways to run OpenHands
 
 > [!CAUTION]
