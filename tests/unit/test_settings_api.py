@@ -10,8 +10,8 @@ from openhands.server.app import app
 from openhands.server.user_auth.user_auth import UserAuth
 from openhands.storage.data_models.user_secrets import UserSecrets
 from openhands.storage.memory import InMemoryFileStore
+from openhands.storage.secrets.secrets_store import SecretsStore
 from openhands.storage.settings.file_settings_store import FileSettingsStore
-from openhands.storage.settings.secret_store import SecretsStore
 from openhands.storage.settings.settings_store import SettingsStore
 
 
@@ -26,6 +26,9 @@ class MockUserAuth(UserAuth):
 
     async def get_user_id(self) -> str | None:
         return 'test-user'
+
+    async def get_user_email(self) -> str | None:
+        return 'test-email@whatever.com'
 
     async def get_access_token(self) -> SecretStr | None:
         return SecretStr('test-token')
