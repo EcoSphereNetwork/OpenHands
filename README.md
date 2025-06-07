@@ -82,6 +82,15 @@ api_key = "dummy"
 sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
 ```
 
+Mount your home directory for persistent workspace access by adding:
+
+```toml
+[sandbox]
+volumes = "/home/saschi:/home/saschi:rw"
+```
+
+See `config.toml.example` for a complete sample configuration.
+
 Place additional microagents in `~/.openhands/microagents/` to have them loaded automatically.
 
 ## 💡 Other ways to run OpenHands

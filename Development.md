@@ -90,6 +90,15 @@ api_key = "dummy"
 sse_servers = [{url="https://docs.all-hands.dev/mcp", api_key="your-api-key"}]
 ```
 
+Mount your home directory so the agent can write to it:
+
+```toml
+[sandbox]
+volumes = "/home/saschi:/home/saschi:rw"
+```
+
+See `config.toml.example` for a reference configuration with these options.
+
 ### 4. Running the application
 
 #### Option A: Run the Full Application
