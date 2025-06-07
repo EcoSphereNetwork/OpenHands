@@ -220,7 +220,7 @@ model = "gpt-4o"
 enable_browsing = true
 
 # Whether the LLM draft editor is enabled
-enable_llm_editor = false
+enable_llm_editor = true
 
 # Whether the standard editor tool (str_replace_editor) is enabled
 # Only has an effect if enable_llm_editor is False
